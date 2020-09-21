@@ -15,15 +15,15 @@
         ></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
-<!--          <template v-slot:activator="{ on, attrs }">-->
-<!--            <v-btn-->
-<!--                color="primary"-->
-<!--                dark-->
-<!--                class="mb-2"-->
-<!--                v-bind="attrs"-->
-<!--                v-on="on"-->
-<!--            >New Category</v-btn>-->
-<!--          </template>-->
+          <!--          <template v-slot:activator="{ on, attrs }">-->
+          <!--            <v-btn-->
+          <!--                color="primary"-->
+          <!--                dark-->
+          <!--                class="mb-2"-->
+          <!--                v-bind="attrs"-->
+          <!--                v-on="on"-->
+          <!--            >New Category</v-btn>-->
+          <!--          </template>-->
           <v-card>
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
@@ -85,17 +85,15 @@ export default {
     dialog: false,
     headers: [
       {
-        text: 'Date',
+        text: 'ID',
         align: 'start',
         sortable: true,
-        value: 'date',
+        value: 'item.id',
       },
-      { text: 'Transaction', value: 'transaction' },
+      { text: 'Item', value: 'item.name' },
       { text: 'Quantity', value: 'quantity' },
       { text: 'BasePrice', value: 'basePrice' },
       { text: 'SellPrice', value: 'sellPrice' },
-      { text: 'Cash', value: 'cash' },
-      { text: 'Credit', value: 'credit' },
       { text: 'Investment', value: 'investment' },
       { text: 'Profit', value: 'profit' },
       // { text: 'Actions', value: 'actions', sortable: false },
@@ -144,7 +142,7 @@ export default {
 
   methods: {
     initialize () {
-      axios.get('http://localhost:9000/sale/date').then(response => this.sales = response.data);
+      axios.get('http://localhost:9000/sale/item').then(response => this.sales = response.data);
     },
 
     editItem (item) {

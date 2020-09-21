@@ -6,6 +6,9 @@ import ItemTable from "@/components/ItemTable";
 import OrderTable from "@/components/OrderTable";
 import OrderDetail from "@/components/OrderDetail";
 import Payment from "@/components/Payment";
+import SaleByMonth from "@/components/SaleByMonth";
+import SaleByItem from "@/components/SaleByItem";
+import SaleByCategory from "@/components/SaleByCategory";
 
 Vue.use(Router);
 
@@ -39,6 +42,21 @@ const routes = [
     path: "/payments/:id",
     name: "Payment",
     component: Payment
+  },
+  {
+    path: "/sale/month",
+    name: "SaleByMonth",
+    component: SaleByMonth
+  },
+  {
+    path: "/sale/item",
+    name: "SaleByItem",
+    component: SaleByItem
+  },
+  {
+    path: "/sale/category",
+    name: "SaleByCategory",
+    component: SaleByCategory
   },
 ];
 

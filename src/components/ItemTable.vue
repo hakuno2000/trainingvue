@@ -32,9 +32,9 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.id" label="ID"></v-text-field>
-                  </v-col>
+<!--                  <v-col cols="12" sm="6" md="4">-->
+<!--                    <v-text-field v-model="editedItem.id" label="ID"></v-text-field>-->
+<!--                  </v-col>-->
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
                   </v-col>
@@ -154,9 +154,11 @@ export default {
     },
 
     editItem (item) {
-      this.editedIndex = this.items.indexOf(item)
+      this.editedIndex = item.id;
       this.editedItem = Object.assign({}, item)
       this.dialog = true
+      // console.log(this.editedIndex)
+      // console.log(this.editedItem.categoryId)
     },
 
     deleteItem (item) {
@@ -176,10 +178,15 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem);
+        // Object.assign(this.items[this.editedIndex], this.editedItem);
         const index = this.editedItem.id;
-        axios.put('http://localhost:9000/item/' + index + '/update', this.editedItem);
+        axios.put('http://localhost:9000/item/' + index + '/update', this.editedItem, {
+          params: {
+            categoryId: this.editedItem.categoryId
+          }
+        });
         this.initialize();
+        console.log(this.editedItem)
       } else {
         // this.items.push(this.editedItem);
         const categoryId = this.editedItem.categoryId;
