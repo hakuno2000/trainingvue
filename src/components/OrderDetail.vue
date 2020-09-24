@@ -2,7 +2,7 @@
   <v-data-table
       :headers="headers"
       :items="orderDetails"
-      sort-by="calories"
+      sort-by="id"
       class="elevation-1"
   >
     <template v-slot:top>
@@ -42,7 +42,16 @@
                     <v-text-field v-model="editedOrderDetail.id" label="ID"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedOrderDetail.itemId" label="Item ID"></v-text-field>
+<!--                    <v-text-field v-model="editedOrderDetail.itemId" label="Item ID"></v-text-field>-->
+                    <v-select
+                        v-model="selectedItem"
+                        :items="items"
+                        :rules="[v => !!v || 'Item is required']"
+                        item-text="name"
+                        item-value="id"
+                        label="Item"
+                        required
+                    ></v-select>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedOrderDetail.quantity" label="Quantity"></v-text-field>
@@ -100,9 +109,11 @@ export default {
       { text: 'Price', value: 'items.sellPrice' },
       { text: 'Quantity', value: 'quantity' },
       // { text: 'Shop', value: 'shop' },
-      // { text: 'Actions', value: 'actions', sortable: false },
+      { text: 'Actions', value: 'actions', sortable: false },
     ],
     orderDetails: [],
+    items: [],
+    selectedItem: null,
     editedIndex: -1,
     editedOrderDetail: {
       id: '',
@@ -137,6 +148,7 @@ export default {
   methods: {
     initialize () {
       axios.get('http://localhost:9000/order/' + this.$route.params.id).then(response => this.orderDetails = response.data.orderDetails);
+      axios.get('http://localhost:9000/shop/1/items').then(response => this.items = response.data);
       // console.log(this.orderDetails);
     },
 
@@ -144,12 +156,13 @@ export default {
       this.editedIndex = this.orderDetails.indexOf(item)
       this.editedOrderDetail = Object.assign({}, item)
       this.dialog = true
+      this.editedOrderDetail.itemId = this.selectedItem
     },
 
     deleteItem (item) {
       const index = item.id;
       confirm('Are you sure you want to delete this item?') && this.orderDetails.splice(index, 1)
-      // axios.delete('http://localhost:9000/category/' + index + '/delete');
+      axios.delete('http://localhost:9000/order/detail/' + index + '/delete');
       this.initialize();
     },
 
@@ -162,11 +175,12 @@ export default {
     },
 
     save () {
+      this.editedOrderDetail.itemId = this.selectedItem
       if (this.editedIndex > -1) {
-        Object.assign(this.orderDetails[this.editedIndex], this.editedOrderDetail)
-        const index = this.editedOrderDetail.id;
-        axios.put('http://localhost:9000/category/' + index + '/update', this.editedOrderDetail);
-        this.initialize();
+        // Object.assign(this.orderDetails[this.editedIndex], this.editedOrderDetail)
+        // const index = this.editedOrderDetail.id;
+        // axios.put('http://localhost:9000/category/' + index + '/update', this.editedOrderDetail);
+        // this.initialize();
       } else {
         axios.post('http://localhost:9000/order/detail/create/', null, {
           params: {

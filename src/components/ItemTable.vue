@@ -2,7 +2,7 @@
   <v-data-table
       :headers="headers"
       :items="items"
-      sort-by="calories"
+      sort-by="id"
       class="elevation-1"
   >
     <template v-slot:top>
@@ -39,7 +39,16 @@
                     <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.categoryId" label="Category ID"></v-text-field>
+<!--                    <v-text-field v-model="editedItem.categoryId" label="Category ID"></v-text-field>-->
+                    <v-select
+                        v-model="selectedCategory"
+                        :items="categories"
+                        :rules="[v => !!v || 'Category is required']"
+                        item-text="name"
+                        item-value="id"
+                        label="Category"
+                        required
+                    ></v-select>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.basePrice" label="Base Price"></v-text-field>
@@ -107,6 +116,8 @@ export default {
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     items: [],
+    categories: [],
+    selectedCategory: null,
     editedIndex: -1,
     editedItem: {
       id: '',
@@ -151,6 +162,7 @@ export default {
   methods: {
     initialize () {
       axios.get('http://localhost:9000/shop/1/items').then(response => this.items = response.data);
+      axios.get('http://localhost:9000/shop/1/categories').then(response => this.categories = response.data);
     },
 
     editItem (item) {
@@ -177,19 +189,20 @@ export default {
     },
 
     save () {
+      // console.log(this.selectedCategory);
       if (this.editedIndex > -1) {
         // Object.assign(this.items[this.editedIndex], this.editedItem);
         const index = this.editedItem.id;
         axios.put('http://localhost:9000/item/' + index + '/update', this.editedItem, {
           params: {
-            categoryId: this.editedItem.categoryId
+            categoryId: this.selectedCategory
           }
         });
         this.initialize();
         console.log(this.editedItem)
       } else {
         // this.items.push(this.editedItem);
-        const categoryId = this.editedItem.categoryId;
+        const categoryId = this.selectedCategory;
         this.postItem.name = this.editedItem.name;
         this.postItem.basePrice = this.editedItem.basePrice;
         this.postItem.sellPrice = this.editedItem.sellPrice;

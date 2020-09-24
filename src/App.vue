@@ -10,9 +10,10 @@
           alt="Vuetify Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="https://vuejs.org/images/logo.png"
           transition="scale-transition"
           width="40"
+          @click="returnHome"
         />
 
         <v-img
@@ -22,17 +23,47 @@
           min-width="100"
           src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
           width="100"
+          @click="returnHome"
         />
       </div>
 
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+          target="_blank"
+          text
+          @click="showCategories"
+      >
+        <span>Categories</span>
+      </v-btn>
+      <v-btn
+          target="_blank"
+          text
+          @click="showItems"
+      >
+        <span>Items</span>
+      </v-btn>
+      <v-btn
+          target="_blank"
+          text
+          @click="showOrders"
+      >
+        <span>Orders</span>
+      </v-btn>
+      <v-btn
+          target="_blank"
+          text
+          @click="showSales"
+      >
+        <span>Sales</span>
+      </v-btn>
+
+      <v-btn
+        href="https://www.flickr.com/photos/hakuno2000/"
         target="_blank"
         text
       >
-        <span class="mr-2">Latest Release</span>
+        <span class="mr-2">Info</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
@@ -57,5 +88,23 @@ export default {
   data: () => ({
     //
   }),
+
+  methods: {
+    returnHome() {
+      this.$router.push('/categories/');
+    },
+    showCategories() {
+      this.$router.push('/categories/');
+    },
+    showItems() {
+      this.$router.push('/items/');
+    },
+    showOrders() {
+      this.$router.push('/orders/');
+    },
+    showSales() {
+      this.$router.push('/sale/month');
+    },
+  }
 };
 </script>

@@ -2,7 +2,7 @@
   <v-data-table
       :headers="headers"
       :items="sales"
-      sort-by="calories"
+      sort-by="id"
       class="elevation-1"
   >
     <template v-slot:top>
@@ -14,6 +14,18 @@
             vertical
         ></v-divider>
         <v-spacer></v-spacer>
+        <v-btn
+            color="primary"
+            dark
+            class="mb-2"
+            @click="saleByMonth"
+        >Sale by Month</v-btn>
+        <v-btn
+            color="primary"
+            dark
+            class="mb-2"
+            @click="saleByCategory"
+        >Sale by Category</v-btn>
         <v-dialog v-model="dialog" max-width="500px">
           <!--          <template v-slot:activator="{ on, attrs }">-->
           <!--            <v-btn-->
@@ -179,6 +191,13 @@ export default {
       }
       this.close()
     },
+
+    saleByMonth() {
+      this.$router.push('/sale/month');
+    },
+    saleByCategory() {
+      this.$router.push('/sale/category');
+    }
   },
 }
 </script>
